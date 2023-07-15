@@ -1,17 +1,16 @@
 package main
 
 import (
-	"silver-clean-code/internal/infra/database"
+	"silver-clean-code/internal/infra/db/local"
 	"silver-clean-code/internal/infra/server"
-	"silver-clean-code/internal/infra/server/echo"
 )
 
 func main() {
-	localDB := database.NewLocalDB()
-	_ = localDB.CreateTable("accounts")
+	db := local.NewLocalDB()
+	_ = db.CreateTable("accounts")
 
-	manager := server.NewManager(localDB)
+	manager := server.NewManager(db)
 
-	echo.Start(manager, ":8000")
-	//gin.Start(manager, "8001")
+	http := FactoryServer(ECHO)
+	http.Start(":8000", manager)
 }

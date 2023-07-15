@@ -5,7 +5,14 @@ import (
 	"silver-clean-code/internal/infra/server"
 )
 
-func Start(manager *server.Manager, port string) {
+type EchoServer struct {
+}
+
+func NewEchoServer() *EchoServer {
+	return &EchoServer{}
+}
+
+func (s *EchoServer) Start(port string, manager *server.Manager) {
 	e := echo.New()
 
 	e.GET("/accounts/:id", func(c echo.Context) error {

@@ -10,13 +10,13 @@ type Manager struct {
 	AccountController *account.AccountController
 }
 
-func NewManager(repository adapter.Repository) *Manager {
+func NewManager(db adapter.DB) *Manager {
 	return &Manager{
-		AccountController: account.NewAccountController(accountUseCase(repository)),
+		AccountController: account.NewAccountController(accountUseCase(db)),
 	}
 }
 
-func accountUseCase(repository adapter.Repository) *uca.AccountUseCase {
-	accountRepository := account.NewAccountRepository(repository)
+func accountUseCase(db adapter.DB) *uca.AccountUseCase {
+	accountRepository := account.NewAccountRepository(db)
 	return uca.NewAccountUseCase(accountRepository)
 }

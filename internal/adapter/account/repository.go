@@ -6,11 +6,11 @@ import (
 )
 
 type AccountRepository struct {
-	db        adapter.Repository
+	db        adapter.DB
 	tableName string
 }
 
-func NewAccountRepository(db adapter.Repository) *AccountRepository {
+func NewAccountRepository(db adapter.DB) *AccountRepository {
 	return &AccountRepository{
 		db:        db,
 		tableName: "accounts",
