@@ -1,32 +1,28 @@
 package main
 
 import (
-	"silver-clean-code/internal/infra/db/local"
+	"silver-clean-code/internal/infra/db/mysql"
+	"silver-clean-code/internal/infra/env"
 	"silver-clean-code/internal/infra/server"
 	"silver-clean-code/internal/infra/server/echo"
 	"silver-clean-code/internal/infra/server/gin"
 )
 
-const (
-	EchoServer = "echo"
-	GinServer  = "gin"
-)
-
 func main() {
-	db := local.NewLocalDB()
-	_ = db.CreateTable("accounts")
+	db := mysql.NewMysqlDB()
 
 	manager := server.NewManager(db)
 
-	http := factoryServer(EchoServer)
-	http.Start(":8000", manager)
+	serverName := env.GetString("SERVER_NAME", env.EchoServer)
+	http := factoryServer(serverName)
+	http.Start(env.GetString("SERVER_PORT", env.Port), manager)
 }
 
 func factoryServer(name string) server.Server {
 	switch name {
-	case EchoServer:
+	case env.EchoServer:
 		return echo.NewEchoServer()
-	case GinServer:
+	case env.GinServer:
 		return gin.NewGinServer()
 	}
 
