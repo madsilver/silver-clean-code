@@ -7,7 +7,7 @@ import (
 )
 
 type Manager struct {
-	AccountController account.Controller
+	AccountController Controller
 }
 
 func NewManager(db adapter.DB) *Manager {

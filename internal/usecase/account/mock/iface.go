@@ -34,6 +34,20 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 	return m.recorder
 }
 
+// Add mocks base method.
+func (m *MockRepository) Add(ent *entity.Account) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Add", ent)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Add indicates an expected call of Add.
+func (mr *MockRepositoryMockRecorder) Add(ent interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Add", reflect.TypeOf((*MockRepository)(nil).Add), ent)
+}
+
 // FindByID mocks base method.
 func (m *MockRepository) FindByID(id uint64) (*entity.Account, error) {
 	m.ctrl.T.Helper()

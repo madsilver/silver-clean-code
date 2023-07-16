@@ -13,11 +13,15 @@ func NewGinServer() *GinServer {
 }
 
 func (s *GinServer) Start(port string, manager *server.Manager) {
-	r := gin.Default()
+	g := gin.Default()
 
-	r.GET("/accounts/:id", func(c *gin.Context) {
+	g.GET("/accounts/:id", func(c *gin.Context) {
 		_ = manager.AccountController.FindByID(NewGinContext(c))
 	})
 
-	_ = r.Run(port)
+	g.POST("/accounts", func(c *gin.Context) {
+		_ = manager.AccountController.Create(NewGinContext(c))
+	})
+
+	_ = g.Run(port)
 }
