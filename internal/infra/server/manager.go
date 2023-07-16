@@ -7,16 +7,13 @@ import (
 )
 
 type Manager struct {
-	AccountController *account.AccountController
+	AccountController account.Controller
 }
 
 func NewManager(db adapter.DB) *Manager {
-	return &Manager{
-		AccountController: account.NewAccountController(accountUseCase(db)),
-	}
-}
+	accountUseCase := uca.NewAccountUseCase(account.NewAccountRepository(db))
 
-func accountUseCase(db adapter.DB) *uca.AccountUseCase {
-	accountRepository := account.NewAccountRepository(db)
-	return uca.NewAccountUseCase(accountRepository)
+	return &Manager{
+		AccountController: account.NewAccountController(accountUseCase),
+	}
 }
