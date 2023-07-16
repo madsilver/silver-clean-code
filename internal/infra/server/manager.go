@@ -2,8 +2,8 @@ package server
 
 import (
 	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/adapter/account/controller"
-	"silver-clean-code/internal/adapter/account/repository"
+	"silver-clean-code/internal/adapter/controller"
+	"silver-clean-code/internal/adapter/repository"
 	"silver-clean-code/internal/infra/db/mysql"
 	uca "silver-clean-code/internal/usecase/account"
 )
