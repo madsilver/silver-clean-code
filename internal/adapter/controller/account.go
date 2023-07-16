@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/adapter/account/presenter"
+	"silver-clean-code/internal/adapter/presenter"
 	"silver-clean-code/internal/entity"
 	"strconv"
 )
