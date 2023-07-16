@@ -39,7 +39,7 @@ func Test_accountUseCase_GetByID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			a := NewAccountUseCase(repository)
-			got, err := a.GetByID(tt.id)
+			got, err := a.GetAccount(tt.id)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetByID() error = %v, wantErr %v", err, tt.wantErr)
 				return

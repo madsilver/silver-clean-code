@@ -19,9 +19,9 @@ func (s *GinServer) Start(port string, manager *server.Manager) {
 		_ = manager.AccountController.FindByID(NewGinContext(c))
 	})
 
-	g.POST("/accounts", func(c *gin.Context) {
-		_ = manager.AccountController.Create(NewGinContext(c))
-	})
+	//g.POST("/accounts", func(c *gin.Context) {
+	//	_ = manager.AccountController.Create(NewGinContext(c))
+	//})
 
-	_ = g.Run(port)
+	_ = g.Run(":" + port)
 }
