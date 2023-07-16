@@ -19,5 +19,9 @@ func (s *EchoServer) Start(port string, manager *server.Manager) {
 		return manager.AccountController.FindByID(NewEchoContext(c))
 	})
 
+	e.POST("/accounts", func(c echo.Context) error {
+		return manager.AccountController.Create(NewEchoContext(c))
+	})
+
 	e.Logger.Fatal(e.Start(port))
 }

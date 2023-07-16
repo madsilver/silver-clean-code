@@ -77,7 +77,7 @@ func TestLocalDB_Create(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := l.Add(tt.args.tableName, tt.args.id, tt.args.value); (err != nil) != tt.wantErr {
+			if err := l.Add(tt.args.tableName, tt.args.value); (err != nil) != tt.wantErr {
 				t.Errorf("Create() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

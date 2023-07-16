@@ -6,7 +6,6 @@ package mock_account
 
 import (
 	reflect "reflect"
-	adapter "silver-clean-code/internal/adapter"
 	entity "silver-clean-code/internal/entity"
 
 	gomock "github.com/golang/mock/gomock"
@@ -35,6 +34,20 @@ func (m *MockUseCase) EXPECT() *MockUseCaseMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockUseCase) Create(ent *entity.Account) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ent)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockUseCaseMockRecorder) Create(ent interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUseCase)(nil).Create), ent)
+}
+
 // GetByID mocks base method.
 func (m *MockUseCase) GetByID(id uint64) (*entity.Account, error) {
 	m.ctrl.T.Helper()
@@ -48,41 +61,4 @@ func (m *MockUseCase) GetByID(id uint64) (*entity.Account, error) {
 func (mr *MockUseCaseMockRecorder) GetByID(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockUseCase)(nil).GetByID), id)
-}
-
-// MockController is a mock of Controller interface.
-type MockController struct {
-	ctrl     *gomock.Controller
-	recorder *MockControllerMockRecorder
-}
-
-// MockControllerMockRecorder is the mock recorder for MockController.
-type MockControllerMockRecorder struct {
-	mock *MockController
-}
-
-// NewMockController creates a new mock instance.
-func NewMockController(ctrl *gomock.Controller) *MockController {
-	mock := &MockController{ctrl: ctrl}
-	mock.recorder = &MockControllerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockController) EXPECT() *MockControllerMockRecorder {
-	return m.recorder
-}
-
-// FindByID mocks base method.
-func (m *MockController) FindByID(ctx adapter.ContextServer) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByID", ctx)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// FindByID indicates an expected call of FindByID.
-func (mr *MockControllerMockRecorder) FindByID(ctx interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockController)(nil).FindByID), ctx)
 }

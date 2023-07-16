@@ -17,3 +17,7 @@ func (s *context) Param(name string) string {
 func (s *context) JSON(code int, i any) error {
 	return s.ctx.JSON(code, i)
 }
+
+func (s *context) Bind(i interface{}) error {
+	return s.ctx.Bind(i)
+}

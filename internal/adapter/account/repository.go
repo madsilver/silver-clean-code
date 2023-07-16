@@ -24,3 +24,7 @@ func (r *AccountRepository) FindByID(id uint64) (*entity.Account, error) {
 	}
 	return account.(*entity.Account), nil
 }
+
+func (r *AccountRepository) Add(ent *entity.Account) error {
+	return r.db.Add(r.tableName, ent)
+}

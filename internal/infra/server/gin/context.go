@@ -20,3 +20,7 @@ func (s *context) JSON(code int, i any) error {
 	s.ctx.JSON(code, i)
 	return nil
 }
+
+func (s *context) Bind(i interface{}) error {
+	return s.ctx.Bind(i)
+}

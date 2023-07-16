@@ -27,7 +27,7 @@ func (l *LocalDB) FindByID(tableName string, id any) (any, error) {
 	return nil, errors.New("not found")
 }
 
-func (l *LocalDB) Add(tableName string, id any, value any) error {
-	l.storage[tableName][id] = value
+func (l *LocalDB) Add(tableName string, value any) error {
+	l.storage[tableName][0] = value
 	return nil
 }

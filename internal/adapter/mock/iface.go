@@ -33,6 +33,20 @@ func (m *MockContextServer) EXPECT() *MockContextServerMockRecorder {
 	return m.recorder
 }
 
+// Bind mocks base method.
+func (m *MockContextServer) Bind(i interface{}) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Bind", i)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Bind indicates an expected call of Bind.
+func (mr *MockContextServerMockRecorder) Bind(i interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bind", reflect.TypeOf((*MockContextServer)(nil).Bind), i)
+}
+
 // JSON mocks base method.
 func (m *MockContextServer) JSON(code int, i any) error {
 	m.ctrl.T.Helper()
@@ -85,17 +99,17 @@ func (m *MockDB) EXPECT() *MockDBMockRecorder {
 }
 
 // Add mocks base method.
-func (m *MockDB) Add(tableName string, id, value any) error {
+func (m *MockDB) Add(tableName string, value any) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Add", tableName, id, value)
+	ret := m.ctrl.Call(m, "Add", tableName, value)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Add indicates an expected call of Add.
-func (mr *MockDBMockRecorder) Add(tableName, id, value interface{}) *gomock.Call {
+func (mr *MockDBMockRecorder) Add(tableName, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Add", reflect.TypeOf((*MockDB)(nil).Add), tableName, id, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Add", reflect.TypeOf((*MockDB)(nil).Add), tableName, value)
 }
 
 // CreateTable mocks base method.

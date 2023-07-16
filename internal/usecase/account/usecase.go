@@ -15,3 +15,7 @@ func NewAccountUseCase(repository Repository) *AccountUseCase {
 func (a *AccountUseCase) GetByID(id uint64) (*entity.Account, error) {
 	return a.repository.FindByID(id)
 }
+
+func (a *AccountUseCase) Create(ent *entity.Account) error {
+	return a.repository.Add(ent)
+}
