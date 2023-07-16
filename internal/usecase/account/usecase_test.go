@@ -5,7 +5,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"reflect"
 	"silver-clean-code/internal/entity"
-	mock_account "silver-clean-code/internal/usecase/account/mock"
+	mockaccount "silver-clean-code/internal/usecase/account/mock"
 	"testing"
 )
 
@@ -31,7 +31,7 @@ func Test_accountUseCase_GetByID(t *testing.T) {
 	}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	repository := mock_account.NewMockAccountRepository(ctrl)
+	repository := mockaccount.NewMockRepository(ctrl)
 	gomock.InOrder(
 		repository.EXPECT().FindByID(gomock.Any()).Return(&entity.Account{AccountID: 1}, nil),
 		repository.EXPECT().FindByID(gomock.Any()).Return(nil, errors.New("error")),

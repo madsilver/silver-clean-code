@@ -23,4 +23,8 @@ test: ## Run the tests of the project
 	@go test ./...
 
 mock: ## Build mocks
-	@mockgen -source=internal/usecase/account/repository.go -destination=internal/usecase/account/mock/repository.go
+	@go get github.com/golang/mock/gomock
+	@go install github.com/golang/mock/mockgen
+	@~/go/bin/mockgen -source=internal/usecase/account/iface.go -destination=internal/usecase/account/mock/iface.go
+	@~/go/bin/mockgen -source=internal/adapter/iface.go -destination=internal/adapter/mock/iface.go
+	@~/go/bin/mockgen -source=internal/adapter/account/iface.go -destination=internal/adapter/account/mock/iface.go

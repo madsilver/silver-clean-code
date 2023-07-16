@@ -3,15 +3,14 @@ package account
 import (
 	"net/http"
 	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/usecase/account"
 	"strconv"
 )
 
 type AccountController struct {
-	usecase *account.AccountUseCase
+	usecase UseCase
 }
 
-func NewAccountController(usecase *account.AccountUseCase) *AccountController {
+func NewAccountController(usecase UseCase) *AccountController {
 	return &AccountController{
 		usecase: usecase,
 	}

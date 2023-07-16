@@ -3,10 +3,10 @@ package account
 import "silver-clean-code/internal/entity"
 
 type AccountUseCase struct {
-	repository AccountRepository
+	repository Repository
 }
 
-func NewAccountUseCase(repository AccountRepository) *AccountUseCase {
+func NewAccountUseCase(repository Repository) *AccountUseCase {
 	return &AccountUseCase{
 		repository: repository,
 	}
