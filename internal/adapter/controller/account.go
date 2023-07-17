@@ -11,6 +11,7 @@ import (
 type UseCase interface {
 	GetAccount(id uint64) (*entity.Account, error)
 	GetAccounts() ([]*entity.Account, error)
+	SaveAccount(account *entity.Account) error
 }
 
 type AccountController struct {
@@ -23,7 +24,7 @@ func NewAccountController(usecase UseCase) *AccountController {
 	}
 }
 
-func (c *AccountController) FindByID(ctx adapter.ContextServer) error {
+func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetAccount(id)
 	if err != nil {
@@ -34,7 +35,7 @@ func (c *AccountController) FindByID(ctx adapter.ContextServer) error {
 	return ctx.JSON(http.StatusOK, presenter.EntityToPresenter(result))
 }
 
-func (c *AccountController) FindAll(ctx adapter.ContextServer) error {
+func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{
@@ -42,4 +43,20 @@ func (c *AccountController) FindAll(ctx adapter.ContextServer) error {
 		})
 	}
 	return ctx.JSON(http.StatusOK, presenter.EntitiesToPresenters(result))
+}
+
+func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
+	account := &entity.Account{}
+	if err := ctx.Bind(account); err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{
+			"error": "bad request",
+		})
+	}
+	err := c.usecase.SaveAccount(account)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "internal error",
+		})
+	}
+	return ctx.JSON(http.StatusOK, presenter.EntityToPresenter(account))
 }

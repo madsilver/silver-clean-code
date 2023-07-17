@@ -28,12 +28,10 @@ func (r *AccountRepository) FindByID(id uint64) (*entity.Account, error) {
 func (r *AccountRepository) FindAll() ([]*entity.Account, error) {
 	account := &entity.Account{}
 	var accounts []*entity.Account
-
 	rows, err := r.db.Conn.Query("SELECT * FROM Account")
 	if err != nil {
 		return nil, err
 	}
-
 	if rows.Next() {
 		err = rows.Scan(&account.AccountID, &account.DocumentNumber)
 		if err != nil {
@@ -41,6 +39,10 @@ func (r *AccountRepository) FindAll() ([]*entity.Account, error) {
 		}
 		accounts = append(accounts, account)
 	}
-
 	return accounts, nil
+}
+
+func (r *AccountRepository) Save(account *entity.Account) error {
+	_, err := r.db.Conn.Exec("INSERT INTO Account (AccountID, DocumentNumber) VALUES (?, ?)", nil)
+	return err
 }

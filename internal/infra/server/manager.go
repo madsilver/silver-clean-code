@@ -9,8 +9,9 @@ import (
 )
 
 type Controller interface {
-	FindByID(ctx adapter.ContextServer) error
-	FindAll(ctx adapter.ContextServer) error
+	FindAccountByID(ctx adapter.ContextServer) error
+	FindAccounts(ctx adapter.ContextServer) error
+	CreateAccount(ctx adapter.ContextServer) error
 }
 
 type Manager struct {

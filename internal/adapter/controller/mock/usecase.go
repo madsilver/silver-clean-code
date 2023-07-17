@@ -63,3 +63,17 @@ func (mr *MockUseCaseMockRecorder) GetAccounts() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccounts", reflect.TypeOf((*MockUseCase)(nil).GetAccounts))
 }
+
+// SaveAccount mocks base method.
+func (m *MockUseCase) SaveAccount(account *entity.Account) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SaveAccount", account)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SaveAccount indicates an expected call of SaveAccount.
+func (mr *MockUseCaseMockRecorder) SaveAccount(account interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveAccount", reflect.TypeOf((*MockUseCase)(nil).SaveAccount), account)
+}
