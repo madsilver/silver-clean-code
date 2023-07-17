@@ -37,8 +37,8 @@ func (c *AccountController) FindByID(ctx adapter.ContextServer) error {
 func (c *AccountController) FindAll(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
-		return ctx.JSON(http.StatusNotFound, map[string]string{
-			"error": "not found",
+		return ctx.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "internal error",
 		})
 	}
 	return ctx.JSON(http.StatusOK, presenter.EntitiesToPresenters(result))

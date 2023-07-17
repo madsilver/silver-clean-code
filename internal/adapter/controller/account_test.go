@@ -30,12 +30,12 @@ func TestAccountController_FindByID(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "",
+			name:    "should return status ok",
 			args:    args{ctx: ctxMock},
 			wantErr: false,
 		},
 		{
-			name:    "",
+			name:    "should return status not found",
 			args:    args{ctx: ctxMock},
 			wantErr: false,
 		},
@@ -46,6 +46,45 @@ func TestAccountController_FindByID(t *testing.T) {
 
 			if err := c.FindByID(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("FindByID() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestAccountController_FindAll(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).Times(2)
+	usecaseMock := mock_controller.NewMockUseCase(ctrl)
+	gomock.InOrder(
+		usecaseMock.EXPECT().GetAccounts().Return([]*entity.Account{}, nil),
+		usecaseMock.EXPECT().GetAccounts().Return(nil, errors.New("error")),
+	)
+	type args struct {
+		ctx adapter.ContextServer
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name:    "should return status ok",
+			args:    args{ctx: ctxMock},
+			wantErr: false,
+		},
+		{
+			name:    "should return internal server error",
+			args:    args{ctx: ctxMock},
+			wantErr: false,
+		},
+	}
+	c := NewAccountController(usecaseMock)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := c.FindAll(tt.args.ctx); (err != nil) != tt.wantErr {
+				t.Errorf("FindAll() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
