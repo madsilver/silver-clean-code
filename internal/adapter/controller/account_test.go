@@ -44,7 +44,7 @@ func TestAccountController_FindByID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			if err := c.FindByID(tt.args.ctx); (err != nil) != tt.wantErr {
+			if err := c.FindAccountByID(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("FindByID() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -83,7 +83,7 @@ func TestAccountController_FindAll(t *testing.T) {
 	c := NewAccountController(usecaseMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := c.FindAll(tt.args.ctx); (err != nil) != tt.wantErr {
+			if err := c.FindAccounts(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("FindAll() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

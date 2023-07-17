@@ -1,10 +1,13 @@
 package account
 
-import "silver-clean-code/internal/entity"
+import (
+	"silver-clean-code/internal/entity"
+)
 
 type Repository interface {
 	FindByID(id uint64) (*entity.Account, error)
 	FindAll() ([]*entity.Account, error)
+	Save(account *entity.Account) error
 }
 
 type AccountUseCase struct {
@@ -23,4 +26,8 @@ func (a *AccountUseCase) GetAccount(id uint64) (*entity.Account, error) {
 
 func (a *AccountUseCase) GetAccounts() ([]*entity.Account, error) {
 	return a.repository.FindAll()
+}
+
+func (a *AccountUseCase) SaveAccount(account *entity.Account) error {
+	return a.repository.Save(account)
 }
