@@ -4,7 +4,7 @@ import (
 	"silver-clean-code/internal/adapter"
 	"silver-clean-code/internal/adapter/controller"
 	"silver-clean-code/internal/adapter/repository"
-	"silver-clean-code/internal/infra/db/mysql"
+	"silver-clean-code/internal/infra/db"
 	uca "silver-clean-code/internal/usecase/account"
 )
 
@@ -18,7 +18,7 @@ type Manager struct {
 	AccountController Controller
 }
 
-func NewManager(conn *mysql.MysqlDB) *Manager {
+func NewManager(conn db.DB) *Manager {
 	accountUseCase := uca.NewAccountUseCase(repository.NewAccountRepository(conn))
 
 	return &Manager{

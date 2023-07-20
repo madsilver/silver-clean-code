@@ -25,6 +25,5 @@ func factoryServer(name string) server.Server {
 	case env.GinServer:
 		return gin.NewGinServer()
 	}
-
 	return nil
 }

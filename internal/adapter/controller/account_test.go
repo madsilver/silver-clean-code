@@ -89,3 +89,55 @@ func TestAccountController_FindAll(t *testing.T) {
 		})
 	}
 }
+
+func TestAccountController_CreateAccount(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	usecaseMock := mock_controller.NewMockUseCase(ctrl)
+	gomock.InOrder(
+		//
+		ctxMock.EXPECT().Bind(gomock.Any()).Return(errors.New("error")),
+		ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil),
+		//
+		ctxMock.EXPECT().Bind(gomock.Any()).Return(nil),
+		usecaseMock.EXPECT().SaveAccount(gomock.Any()).Return(errors.New("error")),
+		ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil),
+		//
+		ctxMock.EXPECT().Bind(gomock.Any()).Return(nil),
+		usecaseMock.EXPECT().SaveAccount(gomock.Any()).Return(nil),
+		ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil),
+	)
+	type args struct {
+		ctx adapter.ContextServer
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name:    "bad request",
+			args:    args{ctx: ctxMock},
+			wantErr: false,
+		},
+		{
+			name:    "internal server error",
+			args:    args{ctx: ctxMock},
+			wantErr: false,
+		},
+		{
+			name:    "save account",
+			args:    args{ctx: ctxMock},
+			wantErr: false,
+		},
+	}
+	c := NewAccountController(usecaseMock)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := c.CreateAccount(tt.args.ctx); (err != nil) != tt.wantErr {
+				t.Errorf("CreateAccount() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

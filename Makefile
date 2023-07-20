@@ -27,3 +27,5 @@ mock: ## Build mocks
 	@go install github.com/golang/mock/mockgen
 	@~/go/bin/mockgen -source=internal/usecase/account/usecase.go -destination=internal/usecase/account/mock/repository.go
 	@~/go/bin/mockgen -source=internal/adapter/controller/account.go -destination=internal/adapter/controller/mock/usecase.go
+	@~/go/bin/mockgen -source=internal/infra/db/db.go -destination=internal/infra/db/mock/db.go
+	@~/go/bin/mockgen -source=internal/adapter/context_server.go -destination=internal/adapter/mock/context_server.go
