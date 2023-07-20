@@ -2,23 +2,25 @@ package repository
 
 import (
 	"silver-clean-code/internal/entity"
-	"silver-clean-code/internal/infra/db/mysql"
+	"silver-clean-code/internal/infra/db"
 )
 
 type AccountRepository struct {
-	db *mysql.MysqlDB
+	db db.DB
 }
 
-func NewAccountRepository(db *mysql.MysqlDB) *AccountRepository {
+func NewAccountRepository(db db.DB) *AccountRepository {
 	return &AccountRepository{
 		db: db,
 	}
 }
 
 func (r *AccountRepository) FindByID(id uint64) (*entity.Account, error) {
+	query := "SELECT * FROM Account WHERE AccountID = ?"
 	account := &entity.Account{}
-	row := r.db.Conn.QueryRow("SELECT * FROM Account WHERE AccountID = ?", id)
-	err := row.Scan(&account.AccountID, &account.DocumentNumber)
+	err := r.db.QueryRow(query, id, func(scan func(dest ...any) error) {
+		_ = scan(&account.AccountID, &account.DocumentNumber)
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -26,23 +28,30 @@ func (r *AccountRepository) FindByID(id uint64) (*entity.Account, error) {
 }
 
 func (r *AccountRepository) FindAll() ([]*entity.Account, error) {
-	account := &entity.Account{}
+	query := "SELECT * FROM Account"
 	var accounts []*entity.Account
-	rows, err := r.db.Conn.Query("SELECT * FROM Account")
+
+	err := r.db.Query(query, func(scan func(dest ...any) error) {
+		account := &entity.Account{}
+		err := scan(&account.AccountID, &account.DocumentNumber)
+		if err == nil {
+			accounts = append(accounts, account)
+		}
+	})
+
 	if err != nil {
 		return nil, err
 	}
-	if rows.Next() {
-		err = rows.Scan(&account.AccountID, &account.DocumentNumber)
-		if err != nil {
-			return nil, err
-		}
-		accounts = append(accounts, account)
-	}
+
 	return accounts, nil
 }
 
 func (r *AccountRepository) Save(account *entity.Account) error {
-	_, err := r.db.Conn.Exec("INSERT INTO Account (AccountID, DocumentNumber) VALUES (?, ?)", nil)
+	query := "INSERT INTO Account (DocumentNumber) VALUES (?)"
+	res, err := r.db.Save(query, &account.DocumentNumber)
+	if err != nil {
+		return err
+	}
+	account.AccountID = uint64(res.(int64))
 	return err
 }

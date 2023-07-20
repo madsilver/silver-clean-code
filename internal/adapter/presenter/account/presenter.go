@@ -1,4 +1,4 @@
-package presenter
+package account
 
 import "silver-clean-code/internal/entity"
 
@@ -12,14 +12,21 @@ type Accounts struct {
 	Items      []Account `json:"items"`
 }
 
-func EntityToPresenter(ent *entity.Account) Account {
+func ToEntity(pre *Account) *entity.Account {
+	return &entity.Account{
+		AccountID:      pre.AccountID,
+		DocumentNumber: pre.DocumentNumber,
+	}
+}
+
+func ToPresenter(ent *entity.Account) Account {
 	return Account{
 		AccountID:      ent.AccountID,
 		DocumentNumber: ent.DocumentNumber,
 	}
 }
 
-func EntitiesToPresenters(entities []*entity.Account) Accounts {
+func ToPresenters(entities []*entity.Account) Accounts {
 	var presenters []Account
 	for _, ent := range entities {
 		presenter := Account{

@@ -75,9 +75,9 @@ func TestAccountUseCase_GetAccounts(t *testing.T) {
 		repository.EXPECT().FindAll().Return([]*entity.Account{{AccountID: 1}}, nil),
 		repository.EXPECT().FindAll().Return(nil, errors.New("error")),
 	)
+	a := NewAccountUseCase(repository)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			a := NewAccountUseCase(repository)
 			got, err := a.GetAccounts()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetAccounts() error = %v, wantErr %v", err, tt.wantErr)
@@ -85,6 +85,37 @@ func TestAccountUseCase_GetAccounts(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetAccounts() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAccountUseCase_SaveAccount(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "should save an account",
+			wantErr: false,
+		},
+		{
+			name:    "should return an error",
+			wantErr: true,
+		},
+	}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repository := mockaccount.NewMockRepository(ctrl)
+	gomock.InOrder(
+		repository.EXPECT().Save(gomock.Any()).Return(nil),
+		repository.EXPECT().Save(gomock.Any()).Return(errors.New("error")),
+	)
+	a := NewAccountUseCase(repository)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := a.SaveAccount(&entity.Account{}); (err != nil) != tt.wantErr {
+				t.Errorf("SaveAccount() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

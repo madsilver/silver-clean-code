@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/adapter/presenter"
+	presenter "silver-clean-code/internal/adapter/presenter/account"
 	"silver-clean-code/internal/entity"
 	"strconv"
 )
@@ -28,11 +28,18 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetAccount(id)
 	if err != nil {
-		return ctx.JSON(http.StatusNotFound, map[string]string{
-			"error": "not found",
+		return ctx.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "internal server error",
 		})
 	}
-	return ctx.JSON(http.StatusOK, presenter.EntityToPresenter(result))
+
+	if result.AccountID == 0 {
+		return ctx.JSON(http.StatusNotFound, map[string]string{
+			"message": "account not found",
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, presenter.ToPresenter(result))
 }
 
 func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
@@ -42,21 +49,22 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusOK, presenter.EntitiesToPresenters(result))
+	return ctx.JSON(http.StatusOK, presenter.ToPresenters(result))
 }
 
 func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
-	account := &entity.Account{}
-	if err := ctx.Bind(account); err != nil {
+	body := &presenter.Account{}
+	if err := ctx.Bind(body); err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "bad request",
 		})
 	}
+	account := presenter.ToEntity(body)
 	err := c.usecase.SaveAccount(account)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusOK, presenter.EntityToPresenter(account))
+	return ctx.JSON(http.StatusOK, presenter.ToPresenter(account))
 }
