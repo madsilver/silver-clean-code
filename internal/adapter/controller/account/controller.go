@@ -1,6 +1,7 @@
 package account
 
 import (
+	"github.com/labstack/gommon/log"
 	"net/http"
 	"silver-clean-code/internal/adapter"
 	"silver-clean-code/internal/adapter/presenter/account"
@@ -28,12 +29,14 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetAccount(id)
 	if err != nil {
+		log.Error(err.Error())
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{
 			"error": "internal server error",
 		})
 	}
 
 	if result.AccountID == 0 {
+		log.Infof("account id not found: %v", ctx.Param("id"))
 		return ctx.JSON(http.StatusNotFound, map[string]string{
 			"message": "account not found",
 		})
@@ -45,6 +48,7 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
+		log.Error(err.Error())
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{
 			"error": "internal error",
 		})
@@ -55,6 +59,7 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 	body := &account.Account{}
 	if err := ctx.Bind(body); err != nil {
+		log.Info(err.Error())
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "bad request",
 		})
@@ -62,6 +67,7 @@ func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 	acc := account.ToEntity(body)
 	err := c.usecase.SaveAccount(acc)
 	if err != nil {
+		log.Error(err.Error())
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{
 			"error": "internal error",
 		})
