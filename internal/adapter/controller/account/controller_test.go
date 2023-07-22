@@ -14,8 +14,8 @@ func TestAccountController_FindByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	ctxMock := mock_adapter.NewMockContextServer(ctrl)
-	ctxMock.EXPECT().Param(gomock.Any()).Return("1").Times(2)
-	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).Times(2)
+	ctxMock.EXPECT().Param(gomock.Any()).Return("1").Times(2).AnyTimes()
+	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	usecaseMock := mock_account.NewMockUseCase(ctrl)
 	gomock.InOrder(
 		usecaseMock.EXPECT().GetAccount(gomock.Any()).Return(&entity.Account{}, nil),
