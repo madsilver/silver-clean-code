@@ -41,11 +41,11 @@ silver-clean-code/internal/adapter/repository/mysql/transaction.go:59.2,59.26 1 
 silver-clean-code/internal/adapter/repository/mysql/transaction.go:62.77,65.16 3 2
 silver-clean-code/internal/adapter/repository/mysql/transaction.go:65.16,67.3 1 1
 silver-clean-code/internal/adapter/repository/mysql/transaction.go:68.2,69.12 2 1
-silver-clean-code/internal/infra/server/manager.go:15.75,23.2 3 1
 silver-clean-code/internal/usecase/account/usecase.go:11.63,15.2 1 3
 silver-clean-code/internal/usecase/account/usecase.go:17.73,19.2 1 1
 silver-clean-code/internal/usecase/account/usecase.go:21.67,23.2 1 1
 silver-clean-code/internal/usecase/account/usecase.go:25.69,27.2 1 1
+silver-clean-code/internal/infra/server/manager.go:15.75,23.2 3 1
 silver-clean-code/internal/usecase/transaction/usecase.go:13.71,17.2 1 2
 silver-clean-code/internal/usecase/transaction/usecase.go:19.85,21.2 1 1
 silver-clean-code/internal/usecase/transaction/usecase.go:23.79,25.2 1 0
