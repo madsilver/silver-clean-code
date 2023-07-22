@@ -2,7 +2,9 @@ package mysql
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"silver-clean-code/internal/infra/env"
 	"time"
 )
 
@@ -11,8 +13,7 @@ type MysqlDB struct {
 }
 
 func NewMysqlDB() *MysqlDB {
-	dsn := "silver:silver@/silverlabs"
-	conn, err := sql.Open("mysql", dsn)
+	conn, err := sql.Open("mysql", getDSN())
 	if err != nil {
 		panic(err.Error())
 	}
@@ -28,6 +29,13 @@ func NewMysqlDB() *MysqlDB {
 	return &MysqlDB{
 		Conn: conn,
 	}
+}
+
+func getDSN() string {
+	user := env.GetString("MYSQL_USER", env.MysqlUser)
+	pass := env.GetString("MYSQL_USER", env.MysqlPassword)
+	dbName := env.GetString("MYSQL_USER", env.MysqlDatabase)
+	return fmt.Sprintf("%s:%s@/%s", user, pass, dbName)
 }
 
 func (m *MysqlDB) Query(query string, fn func(scan func(dest ...any) error)) error {
