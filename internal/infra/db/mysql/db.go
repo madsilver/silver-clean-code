@@ -32,10 +32,12 @@ func NewMysqlDB() *MysqlDB {
 }
 
 func getDSN() string {
-	user := env.GetString("MYSQL_USER", env.MysqlUser)
-	pass := env.GetString("MYSQL_USER", env.MysqlPassword)
-	dbName := env.GetString("MYSQL_USER", env.MysqlDatabase)
-	return fmt.Sprintf("%s:%s@/%s", user, pass, dbName)
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		env.GetString("MYSQL_USER", env.MysqlUser),
+		env.GetString("MYSQL_PASSWORD", env.MysqlPassword),
+		env.GetString("MYSQL_HOST", env.MysqlHost),
+		env.GetString("MYSQL_PORT", env.MysqlPort),
+		env.GetString("MYSQL_DATABASE", env.MysqlDatabase))
 }
 
 func (m *MysqlDB) Query(query string, fn func(scan func(dest ...any) error) error) error {
