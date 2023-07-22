@@ -14,7 +14,7 @@ func TestAccountRepository_FindByID(t *testing.T) {
 	defer ctrl.Finish()
 	id := uint64(1)
 	doc := "00000000001"
-	qfn := buildQueryRowFunction(id, doc, false)
+	qfn := buildAccountQueryRowFunction(id, doc)
 	mockDB := mock_db.NewMockDB(ctrl)
 	mockDB.EXPECT().
 		QueryRow(gomock.Any(), gomock.Any(), gomock.Any()).
@@ -31,11 +31,10 @@ func TestAccountRepository_FindByID(t *testing.T) {
 func TestAccountRepository_FindByID_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	qfn := buildQueryRowFunction(0, "", true)
 	mockDB := mock_db.NewMockDB(ctrl)
 	mockDB.EXPECT().
 		QueryRow(gomock.Any(), gomock.Any(), gomock.Any()).
-		DoAndReturn(qfn)
+		Return(errors.New("error"))
 	repository := NewAccountRepository(mockDB)
 
 	account, err := repository.FindByID(uint64(1))
@@ -49,7 +48,7 @@ func TestAccountRepository_FindAll(t *testing.T) {
 	defer ctrl.Finish()
 	id := uint64(1)
 	doc := "00000000001"
-	qfn := buildQueryFunction(id, doc, false)
+	qfn := buildAccountQueryFunction(id, doc)
 	mockDB := mock_db.NewMockDB(ctrl)
 	mockDB.EXPECT().
 		Query(gomock.Any(), gomock.Any()).
@@ -67,11 +66,10 @@ func TestAccountRepository_FindAll(t *testing.T) {
 func TestAccountRepository_FindAll_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	qfn := buildQueryFunction(0, "", true)
 	mockDB := mock_db.NewMockDB(ctrl)
 	mockDB.EXPECT().
 		Query(gomock.Any(), gomock.Any()).
-		DoAndReturn(qfn)
+		Return(errors.New("error"))
 	repository := NewAccountRepository(mockDB)
 
 	accounts, err := repository.FindAll()
@@ -108,30 +106,24 @@ func TestAccountRepository_Save_Error(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func buildQueryFunction(id uint64, doc string, wantErr bool) any {
+func buildAccountQueryFunction(id uint64, doc string) any {
 	return func(qs string, query func(scan func(dest ...any) error)) error {
 		query(func(dest ...any) error {
 			*dest[0].(*uint64) = id
 			*dest[1].(*string) = doc
 			return nil
 		})
-		if wantErr {
-			return errors.New("error")
-		}
 		return nil
 	}
 }
 
-func buildQueryRowFunction(id uint64, doc string, wantErr bool) any {
+func buildAccountQueryRowFunction(id uint64, doc string) any {
 	return func(qs string, id uint64, query func(scan func(dest ...any) error)) error {
 		query(func(dest ...any) error {
 			*dest[0].(*uint64) = id
 			*dest[1].(*string) = doc
 			return nil
 		})
-		if wantErr {
-			return errors.New("error")
-		}
 		return nil
 	}
 }
