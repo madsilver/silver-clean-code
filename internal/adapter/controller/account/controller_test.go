@@ -18,7 +18,8 @@ func TestAccountController_FindByID(t *testing.T) {
 	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	usecaseMock := mock_account.NewMockUseCase(ctrl)
 	gomock.InOrder(
-		usecaseMock.EXPECT().GetAccount(gomock.Any()).Return(&entity.Account{}, nil),
+		usecaseMock.EXPECT().GetAccount(gomock.Any()).Return(&entity.Account{AccountID: 1}, nil),
+		usecaseMock.EXPECT().GetAccount(gomock.Any()).Return(&entity.Account{AccountID: 0}, nil),
 		usecaseMock.EXPECT().GetAccount(gomock.Any()).Return(nil, errors.New("error")),
 	)
 	type args struct {
@@ -36,6 +37,11 @@ func TestAccountController_FindByID(t *testing.T) {
 		},
 		{
 			name:    "should return status not found",
+			args:    args{ctx: ctxMock},
+			wantErr: false,
+		},
+		{
+			name:    "should return internal server error",
 			args:    args{ctx: ctxMock},
 			wantErr: false,
 		},
