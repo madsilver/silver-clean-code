@@ -10,6 +10,11 @@ type Transaction struct {
 	EventDate       string  `json:"eventDate"`
 }
 
+type Transactions struct {
+	TotalItems int           `json:"total_items"`
+	Items      []Transaction `json:"items"`
+}
+
 func ToPresenter(ent *entity.Transaction) Transaction {
 	return Transaction{
 		TransactionID:   ent.TransactionID,
@@ -17,6 +22,17 @@ func ToPresenter(ent *entity.Transaction) Transaction {
 		Amount:          ent.Amount,
 		OperationTypeID: ent.OperationTypeID,
 		EventDate:       ent.EventDate,
+	}
+}
+
+func ToPresenters(entities []*entity.Transaction) Transactions {
+	var presenters []Transaction
+	for _, ent := range entities {
+		presenters = append(presenters, ToPresenter(ent))
+	}
+	return Transactions{
+		Items:      presenters,
+		TotalItems: len(presenters),
 	}
 }
 

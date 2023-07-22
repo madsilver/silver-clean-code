@@ -29,11 +29,7 @@ func ToPresenter(ent *entity.Account) Account {
 func ToPresenters(entities []*entity.Account) Accounts {
 	var presenters []Account
 	for _, ent := range entities {
-		presenter := Account{
-			AccountID:      ent.AccountID,
-			DocumentNumber: ent.DocumentNumber,
-		}
-		presenters = append(presenters, presenter)
+		presenters = append(presenters, ToPresenter(ent))
 	}
 	return Accounts{
 		Items:      presenters,

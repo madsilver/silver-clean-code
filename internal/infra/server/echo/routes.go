@@ -11,6 +11,7 @@ func Routes(e *echo.Echo, manager *server.Manager) {
 	e.GET("/accounts", mountHandler(manager.AccountController.FindAccounts))
 	e.POST("/accounts", mountHandler(manager.AccountController.CreateAccount))
 	e.GET("/transactions/:id", mountHandler(manager.TransactionController.FindTransactionByID))
+	e.GET("/transactions", mountHandler(manager.TransactionController.FindTransactions))
 	e.POST("/transactions", mountHandler(manager.TransactionController.CreateTransaction))
 }
 

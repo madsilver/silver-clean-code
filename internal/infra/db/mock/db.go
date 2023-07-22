@@ -34,7 +34,7 @@ func (m *MockDB) EXPECT() *MockDBMockRecorder {
 }
 
 // Query mocks base method.
-func (m *MockDB) Query(query string, fn func(func(...any) error)) error {
+func (m *MockDB) Query(query string, fn func(func(...any) error) error) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Query", query, fn)
 	ret0, _ := ret[0].(error)
@@ -48,7 +48,7 @@ func (mr *MockDBMockRecorder) Query(query, fn interface{}) *gomock.Call {
 }
 
 // QueryRow mocks base method.
-func (m *MockDB) QueryRow(query string, args any, fn func(func(...any) error)) error {
+func (m *MockDB) QueryRow(query string, args any, fn func(func(...any) error) error) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryRow", query, args, fn)
 	ret0, _ := ret[0].(error)

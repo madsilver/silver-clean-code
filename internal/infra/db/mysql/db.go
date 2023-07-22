@@ -38,20 +38,23 @@ func getDSN() string {
 	return fmt.Sprintf("%s:%s@/%s", user, pass, dbName)
 }
 
-func (m *MysqlDB) Query(query string, fn func(scan func(dest ...any) error)) error {
+func (m *MysqlDB) Query(query string, fn func(scan func(dest ...any) error) error) error {
 	rows, err := m.Conn.Query(query)
 	if err != nil {
 		return err
 	}
 
 	for rows.Next() {
-		fn(rows.Scan)
+		err = fn(rows.Scan)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (m *MysqlDB) QueryRow(query string, args any, fn func(scan func(dest ...any) error)) error {
+func (m *MysqlDB) QueryRow(query string, args any, fn func(scan func(dest ...any) error) error) error {
 	row := m.Conn.QueryRow(query, args)
 	if row.Err() != nil {
 		return row.Err()

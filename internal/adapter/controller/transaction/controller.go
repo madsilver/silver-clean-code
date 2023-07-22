@@ -10,6 +10,7 @@ import (
 
 type UseCase interface {
 	GetTransaction(id uint64) (*entity.Transaction, error)
+	GetTransactions() ([]*entity.Transaction, error)
 	SaveTransaction(transaction *entity.Transaction) error
 }
 
@@ -39,6 +40,17 @@ func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) e
 	}
 
 	return ctx.JSON(http.StatusOK, transaction.ToPresenter(result))
+}
+
+func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) error {
+	result, err := c.usecase.GetTransactions()
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "internal server error",
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, transaction.ToPresenters(result))
 }
 
 func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) error {

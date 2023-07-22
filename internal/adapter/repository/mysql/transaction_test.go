@@ -48,6 +48,44 @@ func TestTransactionRepository_FindByID_Error(t *testing.T) {
 	assert.Nil(t, transaction)
 }
 
+func TestTransactionRepository_FindAll(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	data := &entity.Transaction{
+		TransactionID:   1,
+		AccountID:       1,
+		OperationTypeID: entity.OperationType.Payment,
+		Amount:          100.0,
+		EventDate:       time.Now().Format(time.RFC3339Nano),
+	}
+	qfn := buildTransactionQueryFunction(data)
+	mockDB := mock_db.NewMockDB(ctrl)
+	mockDB.EXPECT().
+		Query(gomock.Any(), gomock.Any()).
+		DoAndReturn(qfn)
+	repository := NewTransactionRepository(mockDB)
+
+	transactions, err := repository.FindAll()
+
+	assert.Nil(t, err)
+	assert.Equal(t, 1, len(transactions))
+}
+
+func TestTransactionRepository_FindAll_Error(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	mockDB := mock_db.NewMockDB(ctrl)
+	mockDB.EXPECT().
+		Query(gomock.Any(), gomock.Any()).
+		Return(errors.New("error"))
+	repository := NewTransactionRepository(mockDB)
+
+	transactions, err := repository.FindAll()
+
+	assert.NotNil(t, err)
+	assert.Nil(t, transactions)
+}
+
 func TestTransactionRepository_Save(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -77,8 +115,8 @@ func TestTransactionRepository_Save_Error(t *testing.T) {
 }
 
 func buildTransactionQueryFunction(transaction *entity.Transaction) any {
-	return func(qs string, query func(scan func(dest ...any) error)) error {
-		query(func(dest ...any) error {
+	return func(qs string, query func(scan func(dest ...any) error) error) error {
+		return query(func(dest ...any) error {
 			*dest[0].(*uint64) = transaction.TransactionID
 			*dest[1].(*uint64) = transaction.AccountID
 			*dest[2].(*int) = transaction.OperationTypeID
@@ -87,13 +125,12 @@ func buildTransactionQueryFunction(transaction *entity.Transaction) any {
 
 			return nil
 		})
-		return nil
 	}
 }
 
 func buildTransactionQueryRowFunction(transaction *entity.Transaction) any {
-	return func(qs string, id uint64, query func(scan func(dest ...any) error)) error {
-		query(func(dest ...any) error {
+	return func(qs string, id uint64, query func(scan func(dest ...any) error) error) error {
+		return query(func(dest ...any) error {
 			*dest[0].(*uint64) = transaction.TransactionID
 			*dest[1].(*uint64) = transaction.AccountID
 			*dest[2].(*int) = transaction.OperationTypeID
@@ -101,6 +138,5 @@ func buildTransactionQueryRowFunction(transaction *entity.Transaction) any {
 			*dest[4].(*string) = transaction.EventDate
 			return nil
 		})
-		return nil
 	}
 }

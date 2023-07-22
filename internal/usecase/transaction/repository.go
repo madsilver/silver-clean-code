@@ -4,5 +4,6 @@ import "silver-clean-code/internal/entity"
 
 type Repository interface {
 	FindByID(id uint64) (*entity.Transaction, error)
+	FindAll() ([]*entity.Transaction, error)
 	Save(transaction *entity.Transaction) error
 }

@@ -107,23 +107,21 @@ func TestAccountRepository_Save_Error(t *testing.T) {
 }
 
 func buildAccountQueryFunction(id uint64, doc string) any {
-	return func(qs string, query func(scan func(dest ...any) error)) error {
-		query(func(dest ...any) error {
+	return func(qs string, query func(scan func(dest ...any) error) error) error {
+		return query(func(dest ...any) error {
 			*dest[0].(*uint64) = id
 			*dest[1].(*string) = doc
 			return nil
 		})
-		return nil
 	}
 }
 
 func buildAccountQueryRowFunction(id uint64, doc string) any {
-	return func(qs string, id uint64, query func(scan func(dest ...any) error)) error {
-		query(func(dest ...any) error {
+	return func(qs string, id uint64, query func(scan func(dest ...any) error) error) error {
+		return query(func(dest ...any) error {
 			*dest[0].(*uint64) = id
 			*dest[1].(*string) = doc
 			return nil
 		})
-		return nil
 	}
 }

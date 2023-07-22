@@ -20,6 +20,10 @@ func (a *TransactionUseCase) GetTransaction(id uint64) (*entity.Transaction, err
 	return a.repository.FindByID(id)
 }
 
+func (a *TransactionUseCase) GetTransactions() ([]*entity.Transaction, error) {
+	return a.repository.FindAll()
+}
+
 func (a *TransactionUseCase) SaveTransaction(transaction *entity.Transaction) error {
 	setAmountValueByType(transaction)
 	setEventDate(transaction)
