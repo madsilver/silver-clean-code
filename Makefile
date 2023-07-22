@@ -20,6 +20,9 @@ vendor: ## Copy of all packages needed
 	@go mod vendor
 
 test: ## Run the tests of the project
+	@go test -covermode=count -coverprofile=coverage.out  ./...
+
+test-v: ## Run the tests of the project (verbose)
 	@go test -v -cover -p=1 -covermode=count -coverprofile=coverage.out  ./...
 
 mock: ## Build mocks
