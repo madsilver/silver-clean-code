@@ -8,7 +8,7 @@ type context struct {
 	ctx *gin.Context
 }
 
-func NewGinContext(c *gin.Context) *context {
+func NewContext(c *gin.Context) *context {
 	return &context{ctx: c}
 }
 

@@ -2,6 +2,7 @@ package echo
 
 import (
 	"github.com/labstack/echo/v4"
+	"silver-clean-code/internal/infra/env"
 	"silver-clean-code/internal/infra/server"
 )
 
@@ -12,20 +13,10 @@ func NewEchoServer() *EchoServer {
 	return &EchoServer{}
 }
 
-func (s *EchoServer) Start(port string, manager *server.Manager) {
+func (s *EchoServer) Start(manager *server.Manager) {
 	e := echo.New()
 
-	e.GET("/accounts/:id", func(c echo.Context) error {
-		return manager.AccountController.FindAccountByID(NewEchoContext(c))
-	})
+	Routes(e, manager)
 
-	e.GET("/accounts", func(c echo.Context) error {
-		return manager.AccountController.FindAccounts(NewEchoContext(c))
-	})
-
-	e.POST("/accounts", func(c echo.Context) error {
-		return manager.AccountController.CreateAccount(NewEchoContext(c))
-	})
-
-	e.Logger.Fatal(e.Start(":" + port))
+	e.Logger.Fatal(e.Start(":" + env.GetString("SERVER_PORT", env.Port)))
 }

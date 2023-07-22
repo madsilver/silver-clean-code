@@ -1,27 +1,25 @@
 package server
 
 import (
-	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/adapter/controller"
-	"silver-clean-code/internal/adapter/repository"
+	"silver-clean-code/internal/adapter/controller/account"
+	"silver-clean-code/internal/adapter/controller/transaction"
+	"silver-clean-code/internal/adapter/repository/mysql"
 	"silver-clean-code/internal/infra/db"
 	uca "silver-clean-code/internal/usecase/account"
+	uct "silver-clean-code/internal/usecase/transaction"
 )
 
-type Controller interface {
-	FindAccountByID(ctx adapter.ContextServer) error
-	FindAccounts(ctx adapter.ContextServer) error
-	CreateAccount(ctx adapter.ContextServer) error
-}
-
 type Manager struct {
-	AccountController Controller
+	AccountController     *account.AccountController
+	TransactionController *transaction.TransactionController
 }
 
 func NewManager(conn db.DB) *Manager {
-	accountUseCase := uca.NewAccountUseCase(repository.NewAccountRepository(conn))
+	accountUseCase := uca.NewAccountUseCase(mysql.NewAccountRepository(conn))
+	transactionUseCase := uct.NewTransactionUseCase(mysql.NewTransactionRepository(conn))
 
 	return &Manager{
-		AccountController: controller.NewAccountController(accountUseCase),
+		AccountController:     account.NewAccountController(accountUseCase),
+		TransactionController: transaction.NewTransactionController(transactionUseCase),
 	}
 }

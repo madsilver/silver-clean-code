@@ -13,13 +13,12 @@ func main() {
 
 	manager := server.NewManager(db)
 
-	serverName := env.GetString("SERVER_NAME", env.EchoServer)
-	http := factoryServer(serverName)
-	http.Start(env.GetString("SERVER_PORT", env.Port), manager)
+	factoryServer().Start(manager)
 }
 
-func factoryServer(name string) server.Server {
-	switch name {
+func factoryServer() server.Server {
+	serverName := env.GetString("SERVER_NAME", env.EchoServer)
+	switch serverName {
 	case env.EchoServer:
 		return echo.NewEchoServer()
 	case env.GinServer:
