@@ -62,16 +62,21 @@ func (mr *MockDBMockRecorder) QueryRow(query, args, fn interface{}) *gomock.Call
 }
 
 // Save mocks base method.
-func (m *MockDB) Save(query string, args any) (any, error) {
+func (m *MockDB) Save(query string, args ...any) (any, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Save", query, args)
+	varargs := []interface{}{query}
+	for _, a := range args {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Save", varargs...)
 	ret0, _ := ret[0].(any)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Save indicates an expected call of Save.
-func (mr *MockDBMockRecorder) Save(query, args interface{}) *gomock.Call {
+func (mr *MockDBMockRecorder) Save(query interface{}, args ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockDB)(nil).Save), query, args)
+	varargs := append([]interface{}{query}, args...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockDB)(nil).Save), varargs...)
 }
