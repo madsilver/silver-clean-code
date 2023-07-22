@@ -6,13 +6,21 @@ import (
 )
 
 const (
-	EchoServer    = "echo"
-	GinServer     = "gin"
-	Port          = "8000"
-	TableAccounts = "Accounts"
-	MysqlUser     = "silver"
-	MysqlPassword = "silver"
-	MysqlDatabase = "silverlabs"
+	EchoServer       = "echo"
+	GinServer        = "gin"
+	Port             = "8000"
+	MysqlServer      = "mysql"
+	MysqlUser        = "silver"
+	MysqlPassword    = "silver"
+	MysqlDatabase    = "silverlabs"
+	MysqlHost        = "localhost"
+	MysqlPort        = "3306"
+	PostgresServer   = "postgres"
+	PostgresUser     = "silver"
+	PostgresPassword = "silver"
+	PostgresDatabase = "silver"
+	PostgresHost     = "localhost"
+	PostgresPort     = "5432"
 )
 
 func GetString(key string, defaultValue string) string {
@@ -20,7 +28,7 @@ func GetString(key string, defaultValue string) string {
 	if val == "" {
 		return defaultValue
 	}
-	return defaultValue
+	return val
 }
 
 func GetInt(key string, defaultValue int) int {

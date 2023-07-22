@@ -6,7 +6,7 @@ import (
 )
 
 func Test_accountUseCase(t *testing.T) {
-	manager := NewManager(nil)
+	manager := NewManager(nil, nil)
 
 	assert.NotNil(t, manager)
 	assert.NotNil(t, manager.AccountController)
