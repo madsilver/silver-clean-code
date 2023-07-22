@@ -21,10 +21,7 @@ func (r *AccountRepository) FindByID(id uint64) (*entity.Account, error) {
 	err := r.db.QueryRow(query, id, func(scan func(dest ...any) error) error {
 		return scan(&account.AccountID, &account.DocumentNumber)
 	})
-	if err != nil {
-		return nil, err
-	}
-	return account, nil
+	return account, err
 }
 
 func (r *AccountRepository) FindAll() ([]*entity.Account, error) {
@@ -39,20 +36,14 @@ func (r *AccountRepository) FindAll() ([]*entity.Account, error) {
 		}
 		return err
 	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return accounts, nil
+	return accounts, err
 }
 
 func (r *AccountRepository) Save(account *entity.Account) error {
 	query := "INSERT INTO Account (DocumentNumber) VALUES (?)"
 	res, err := r.db.Save(query, &account.DocumentNumber)
-	if err != nil {
-		return err
+	if err == nil {
+		account.AccountID = uint64(res.(int64))
 	}
-	account.AccountID = uint64(res.(int64))
 	return err
 }

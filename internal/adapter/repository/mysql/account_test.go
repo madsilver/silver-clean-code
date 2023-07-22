@@ -40,7 +40,7 @@ func TestAccountRepository_FindByID_Error(t *testing.T) {
 	account, err := repository.FindByID(uint64(1))
 
 	assert.NotNil(t, err)
-	assert.Nil(t, account)
+	assert.Equal(t, "", account.DocumentNumber)
 }
 
 func TestAccountRepository_FindAll(t *testing.T) {
