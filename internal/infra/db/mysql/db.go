@@ -54,8 +54,8 @@ func (m *MysqlDB) QueryRow(query string, args any, fn func(scan func(dest ...any
 	return nil
 }
 
-func (m *MysqlDB) Save(query string, args any) (any, error) {
-	result, err := m.Conn.Exec(query, args)
+func (m *MysqlDB) Save(query string, args ...any) (any, error) {
+	result, err := m.Conn.Exec(query, args...)
 	if err != nil {
 		return 0, err
 	}
