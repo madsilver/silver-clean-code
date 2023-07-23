@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"net/http"
 	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/adapter/presenter/transaction"
+	"silver-clean-code/internal/adapter/presenter"
 	"silver-clean-code/internal/entity"
 	"strconv"
 )
@@ -53,7 +53,7 @@ func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) e
 		})
 	}
 
-	return ctx.JSON(http.StatusOK, transaction.ToPresenter(result))
+	return ctx.JSON(http.StatusOK, presenter.NewTransactionPresenter(result))
 }
 
 // FindTransactions godoc
@@ -74,7 +74,7 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 		})
 	}
 
-	return ctx.JSON(http.StatusOK, transaction.ToPresenters(result))
+	return ctx.JSON(http.StatusOK, presenter.NewTransactionsPresenter(result))
 }
 
 // CreateTransaction godoc
@@ -89,14 +89,14 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 // @Failure 500
 // @Router /transactions [post]
 func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) error {
-	body := &transaction.Transaction{}
+	body := presenter.NewTransactionPresenter(nil)
 	if err := ctx.Bind(body); err != nil {
 		log.Info(err.Error())
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "bad request",
 		})
 	}
-	tran := transaction.ToEntity(body)
+	tran := body.ToEntity()
 	err := c.usecase.SaveTransaction(tran)
 	if err != nil {
 		log.Error(err.Error())
@@ -104,5 +104,5 @@ func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) err
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusCreated, transaction.ToPresenter(tran))
+	return ctx.JSON(http.StatusCreated, presenter.NewTransactionPresenter(tran))
 }

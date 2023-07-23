@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"net/http"
 	"silver-clean-code/internal/adapter"
-	"silver-clean-code/internal/adapter/presenter/account"
+	"silver-clean-code/internal/adapter/presenter"
 	"silver-clean-code/internal/entity"
 	"strconv"
 )
@@ -53,7 +53,7 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 		})
 	}
 
-	return ctx.JSON(http.StatusOK, account.ToPresenter(result))
+	return ctx.JSON(http.StatusOK, presenter.NewAccountPresenter(result))
 }
 
 // FindAccounts godoc
@@ -73,7 +73,7 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusOK, account.ToPresenters(result))
+	return ctx.JSON(http.StatusOK, presenter.NewAccountsPresenter(result))
 }
 
 // CreateAccount godoc
@@ -88,14 +88,14 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 // @Failure 500
 // @Router /accounts [post]
 func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
-	body := &account.Account{}
+	body := presenter.NewAccountPresenter(nil)
 	if err := ctx.Bind(body); err != nil {
 		log.Info(err.Error())
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "bad request",
 		})
 	}
-	acc := account.ToEntity(body)
+	acc := body.ToEntity()
 	err := c.usecase.SaveAccount(acc)
 	if err != nil {
 		log.Error(err.Error())
@@ -103,5 +103,5 @@ func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusCreated, account.ToPresenter(acc))
+	return ctx.JSON(http.StatusCreated, presenter.NewAccountPresenter(acc))
 }
