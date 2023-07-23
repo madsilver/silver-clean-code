@@ -25,6 +25,17 @@ func NewTransactionController(usecase UseCase) *TransactionController {
 	}
 }
 
+// FindTransactionByID godoc
+// @Summary Find transaction by ID.
+// @Description Find a transaction by the ID.
+// @Tags Transaction
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Transaction ID"
+// @Success 200 {object} transaction.Transaction
+// @Failure 404
+// @Failure 500
+// @Router /transactions/{id} [get]
 func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetTransaction(id)
@@ -45,6 +56,15 @@ func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) e
 	return ctx.JSON(http.StatusOK, transaction.ToPresenter(result))
 }
 
+// FindTransactions godoc
+// @Summary List transactions.
+// @Description List all transactions.
+// @Tags Transaction
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} transaction.Transactions
+// @Failure 500
+// @Router /transactions [get]
 func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetTransactions()
 	if err != nil {
@@ -57,6 +77,17 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 	return ctx.JSON(http.StatusOK, transaction.ToPresenters(result))
 }
 
+// CreateTransaction godoc
+// @Summary Create transaction.
+// @Description Create new transactions.
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Param Transaction body transaction.Transaction true " "
+// @Success 201 {object} transaction.Transaction
+// @Failure 400
+// @Failure 500
+// @Router /transactions [post]
 func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) error {
 	body := &transaction.Transaction{}
 	if err := ctx.Bind(body); err != nil {
@@ -73,5 +104,5 @@ func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) err
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusOK, transaction.ToPresenter(tran))
+	return ctx.JSON(http.StatusCreated, transaction.ToPresenter(tran))
 }

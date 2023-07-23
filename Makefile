@@ -11,6 +11,7 @@ help: ## Display help screen
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%s\t$(DEFAULT)%s\n", $$1, $$2}'
 
 run: ## Run application
+	@docker-compose up -d
 	@go run cmd/api/main.go
 
 tidy: ## Downloads go dependencies
@@ -20,10 +21,13 @@ vendor: ## Copy of all packages needed
 	@go mod vendor
 
 test: ## Run the tests of the project
-	@go test -covermode=count -coverprofile=coverage.out  ./...
+	@go test -covermode=atomic -coverprofile=coverage.out  ./...
 
 test-v: ## Run the tests of the project (verbose)
 	@go test -v -cover -p=1 -covermode=count -coverprofile=coverage.out  ./...
+
+api-doc: ## Build swagger
+	@go run github.com/swaggo/swag/cmd/swag init -g ./internal/infra/server/echo/routes.go
 
 mock: ## Build mocks
 	@go get github.com/golang/mock/gomock

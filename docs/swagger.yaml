@@ -1,0 +1,188 @@
+basePath: /v1
+definitions:
+  account.Account:
+    properties:
+      account_id:
+        type: integer
+      document_number:
+        type: string
+    type: object
+  account.Accounts:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/account.Account'
+        type: array
+      total_items:
+        type: integer
+    type: object
+  transaction.Transaction:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+      eventDate:
+        type: string
+      operation_type_id:
+        type: integer
+      transaction_id:
+        type: integer
+    type: object
+  transaction.Transactions:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/transaction.Transaction'
+        type: array
+      total_items:
+        type: integer
+    type: object
+externalDocs:
+  url: https://www.linkedin.com/in/silverdev/
+host: localhost:8000
+info:
+  contact:
+    email: rbpsilver@gmail.com
+    name: Rodrigo Prata
+  description: This project is a practical exercise in using the clean code pattern
+    for application architecture.
+  title: Silver Clean Code
+  version: "1.0"
+paths:
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      description: List all accounts.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.Accounts'
+        "500":
+          description: Internal Server Error
+      summary: List accounts.
+      tags:
+      - Account
+    post:
+      consumes:
+      - application/json
+      description: Create new accounts.
+      parameters:
+      - description: ' '
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/account.Account'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/account.Account'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create account.
+      tags:
+      - Account
+  /accounts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find an account by the ID.
+      operationId: get-string-by-int
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.Account'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find account by ID.
+      tags:
+      - Account
+  /transactions:
+    get:
+      consumes:
+      - application/json
+      description: List all transactions.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/transaction.Transactions'
+        "500":
+          description: Internal Server Error
+      summary: List transactions.
+      tags:
+      - Transaction
+    post:
+      consumes:
+      - application/json
+      description: Create new transactions.
+      parameters:
+      - description: ' '
+        in: body
+        name: Transaction
+        required: true
+        schema:
+          $ref: '#/definitions/transaction.Transaction'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/transaction.Transaction'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create transaction.
+      tags:
+      - Transaction
+  /transactions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find a transaction by the ID.
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/transaction.Transaction'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find transaction by ID.
+      tags:
+      - Transaction
+swagger: "2.0"

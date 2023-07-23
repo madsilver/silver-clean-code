@@ -26,10 +26,17 @@ Feel free to submit suggestions and pull requests.
 | POSTGRES_HOST     | localhost  |                                         |
 | POSTGRES_PORT     | 5432       |                                         |
 
-## Run
+## Usage
+### Start using it
 ```shell
 make run
 ```
 
-## Makefile
+### Makefile
 Use ``make help`` or only ``make`` to check all the available commands.
+
+## Documentation
+1. [Docs](docs)
+2. [Swagger](docs/swagger.json)
+
+http://localhost:8000/swagger/

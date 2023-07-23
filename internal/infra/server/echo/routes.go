@@ -2,17 +2,33 @@ package echo
 
 import (
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
+	_ "silver-clean-code/docs"
 	"silver-clean-code/internal/adapter"
 	"silver-clean-code/internal/infra/server"
 )
 
+// @title           Silver Clean Code
+// @version         1.0
+// @description     This project is a practical exercise in using the clean code pattern for application architecture.
+
+// @contact.name   Rodrigo Prata
+// @contact.email  rbpsilver@gmail.com
+
+// @host      localhost:8000
+// @BasePath  /v1
+
+// Routes @externalDocs.description  OpenAPI
+// @externalDocs.url          https://www.linkedin.com/in/silverdev/
 func Routes(e *echo.Echo, manager *server.Manager) {
-	e.GET("/accounts/:id", mountHandler(manager.AccountController.FindAccountByID))
-	e.GET("/accounts", mountHandler(manager.AccountController.FindAccounts))
-	e.POST("/accounts", mountHandler(manager.AccountController.CreateAccount))
-	e.GET("/transactions/:id", mountHandler(manager.TransactionController.FindTransactionByID))
-	e.GET("/transactions", mountHandler(manager.TransactionController.FindTransactions))
-	e.POST("/transactions", mountHandler(manager.TransactionController.CreateTransaction))
+	e.GET("/v1/accounts/:id", mountHandler(manager.AccountController.FindAccountByID))
+	e.GET("/v1/accounts", mountHandler(manager.AccountController.FindAccounts))
+	e.POST("/v1/accounts", mountHandler(manager.AccountController.CreateAccount))
+	e.GET("/v1/transactions/:id", mountHandler(manager.TransactionController.FindTransactionByID))
+	e.GET("/v1/transactions", mountHandler(manager.TransactionController.FindTransactions))
+	e.POST("/v1/transactions", mountHandler(manager.TransactionController.CreateTransaction))
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
 func mountHandler(fnController func(ctx adapter.ContextServer) error) func(c echo.Context) error {

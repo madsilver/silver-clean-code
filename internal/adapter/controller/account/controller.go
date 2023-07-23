@@ -25,6 +25,17 @@ func NewAccountController(usecase UseCase) *AccountController {
 	}
 }
 
+// FindAccountByID godoc
+// @Summary Find account by ID.
+// @Description Find an account by the ID.
+// @Tags Account
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Account ID"
+// @Success 200 {object} account.Account
+// @Failure 404
+// @Failure 500
+// @Router /accounts/{id} [get]
 func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetAccount(id)
@@ -45,6 +56,15 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	return ctx.JSON(http.StatusOK, account.ToPresenter(result))
 }
 
+// FindAccounts godoc
+// @Summary List accounts.
+// @Description List all accounts.
+// @Tags Account
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} account.Accounts
+// @Failure 500
+// @Router /accounts [get]
 func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
@@ -56,6 +76,17 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 	return ctx.JSON(http.StatusOK, account.ToPresenters(result))
 }
 
+// CreateAccount godoc
+// @Summary Create account.
+// @Description Create new accounts.
+// @Tags Account
+// @Accept json
+// @Produce json
+// @Param Account body account.Account true " "
+// @Success 201 {object} account.Account
+// @Failure 400
+// @Failure 500
+// @Router /accounts [post]
 func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 	body := &account.Account{}
 	if err := ctx.Bind(body); err != nil {
@@ -72,5 +103,5 @@ func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 			"error": "internal error",
 		})
 	}
-	return ctx.JSON(http.StatusOK, account.ToPresenter(acc))
+	return ctx.JSON(http.StatusCreated, account.ToPresenter(acc))
 }
