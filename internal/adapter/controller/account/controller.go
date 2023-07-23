@@ -32,25 +32,21 @@ func NewAccountController(usecase UseCase) *AccountController {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Account ID"
-// @Success 200 {object} account.Account
-// @Failure 404
-// @Failure 500
+// @Success 200 {object} presenter.Account
+// @Failure 404 {object} presenter.ErrorResponse
+// @Failure 500 {object} presenter.ErrorResponse
 // @Router /accounts/{id} [get]
 func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetAccount(id)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "internal server error",
-		})
+		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
 	}
 
 	if result.AccountID == 0 {
 		log.Infof("account id not found: %v", ctx.Param("id"))
-		return ctx.JSON(http.StatusNotFound, map[string]string{
-			"message": "account not found",
-		})
+		return ctx.JSON(http.StatusNotFound, presenter.NewErrorResponse("account not found", ""))
 	}
 
 	return ctx.JSON(http.StatusOK, presenter.NewAccountPresenter(result))
@@ -62,16 +58,14 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 // @Tags Account
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} account.Accounts
-// @Failure 500
+// @Success 200 {object} presenter.Accounts
+// @Failure 500 {object} presenter.ErrorResponse
 // @Router /accounts [get]
 func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "internal error",
-		})
+		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
 	}
 	return ctx.JSON(http.StatusOK, presenter.NewAccountsPresenter(result))
 }
@@ -83,25 +77,21 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 // @Accept json
 // @Produce json
 // @Param Account body account.Account true " "
-// @Success 201 {object} account.Account
-// @Failure 400
-// @Failure 500
+// @Success 201 {object} presenter.Account
+// @Failure 400 {object} presenter.ErrorResponse
+// @Failure 500 {object} presenter.ErrorResponse
 // @Router /accounts [post]
 func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 	body := presenter.NewAccountPresenter(nil)
 	if err := ctx.Bind(body); err != nil {
 		log.Info(err.Error())
-		return ctx.JSON(http.StatusBadRequest, map[string]string{
-			"error": "bad request",
-		})
+		return ctx.JSON(http.StatusBadRequest, presenter.NewErrorResponse("Bad request", err.Error()))
 	}
 	acc := body.ToEntity()
 	err := c.usecase.SaveAccount(acc)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "internal error",
-		})
+		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
 	}
 	return ctx.JSON(http.StatusCreated, presenter.NewAccountPresenter(acc))
 }

@@ -32,25 +32,21 @@ func NewTransactionController(usecase UseCase) *TransactionController {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Transaction ID"
-// @Success 200 {object} transaction.Transaction
-// @Failure 404
-// @Failure 500
+// @Success 200 {object} presenter.Transaction
+// @Failure 404 {object} presenter.ErrorResponse
+// @Failure 500 {object} presenter.ErrorResponse
 // @Router /transactions/{id} [get]
 func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetTransaction(id)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "internal server error",
-		})
+		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
 	}
 
 	if result.AccountID == 0 {
 		log.Infof("transaction id not found: %v", ctx.Param("id"))
-		return ctx.JSON(http.StatusNotFound, map[string]string{
-			"message": "transaction not found",
-		})
+		return ctx.JSON(http.StatusNotFound, presenter.NewErrorResponse("Transaction not found", ""))
 	}
 
 	return ctx.JSON(http.StatusOK, presenter.NewTransactionPresenter(result))
@@ -62,16 +58,14 @@ func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) e
 // @Tags Transaction
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} transaction.Transactions
-// @Failure 500
+// @Success 200 {object} presenter.Transactions
+// @Failure 500 {object} presenter.ErrorResponse
 // @Router /transactions [get]
 func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetTransactions()
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "internal server error",
-		})
+		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
 	}
 
 	return ctx.JSON(http.StatusOK, presenter.NewTransactionsPresenter(result))
@@ -84,25 +78,21 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 // @Accept json
 // @Produce json
 // @Param Transaction body transaction.Transaction true " "
-// @Success 201 {object} transaction.Transaction
-// @Failure 400
-// @Failure 500
+// @Success 201 {object} presenter.Transaction
+// @Failure 400 {object} presenter.ErrorResponse
+// @Failure 500 {object} presenter.ErrorResponse
 // @Router /transactions [post]
 func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) error {
 	body := presenter.NewTransactionPresenter(nil)
 	if err := ctx.Bind(body); err != nil {
 		log.Info(err.Error())
-		return ctx.JSON(http.StatusBadRequest, map[string]string{
-			"error": "bad request",
-		})
+		return ctx.JSON(http.StatusBadRequest, presenter.NewErrorResponse("Bad request", err.Error()))
 	}
 	tran := body.ToEntity()
 	err := c.usecase.SaveTransaction(tran)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "internal error",
-		})
+		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
 	}
 	return ctx.JSON(http.StatusCreated, presenter.NewTransactionPresenter(tran))
 }
