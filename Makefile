@@ -8,11 +8,14 @@ help: ## Display help screen
 	@echo "\tmake [COMMAND]"
 	@echo "Commands:"
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%s\t$(DEFAULT)%s\n", $$1, $$2}'
+		| awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%s\t\t$(DEFAULT)%s\n", $$1, $$2}'
 
 run: ## Run application
 	@docker-compose up -d
 	@go run cmd/api/main.go
+
+build: ## Build image
+	@docker build -t silver-clean-code .
 
 tidy: ## Downloads go dependencies
 	@go mod tidy
