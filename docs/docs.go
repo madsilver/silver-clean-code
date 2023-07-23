@@ -36,11 +36,14 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/account.Accounts"
+                            "$ref": "#/definitions/presenter.Accounts"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     }
                 }
             },
@@ -63,7 +66,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/account.Account"
+                            "$ref": "#/definitions/presenter.Account"
                         }
                     }
                 ],
@@ -71,14 +74,20 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/account.Account"
+                            "$ref": "#/definitions/presenter.Account"
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -96,7 +105,6 @@ const docTemplate = `{
                     "Account"
                 ],
                 "summary": "Find account by ID.",
-                "operationId": "get-string-by-int",
                 "parameters": [
                     {
                         "type": "integer",
@@ -110,14 +118,20 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/account.Account"
+                            "$ref": "#/definitions/presenter.Account"
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -139,11 +153,14 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/transaction.Transactions"
+                            "$ref": "#/definitions/presenter.Transactions"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     }
                 }
             },
@@ -166,7 +183,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/transaction.Transaction"
+                            "$ref": "#/definitions/presenter.Transaction"
                         }
                     }
                 ],
@@ -174,14 +191,20 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/transaction.Transaction"
+                            "$ref": "#/definitions/presenter.Transaction"
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -212,21 +235,27 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/transaction.Transaction"
+                            "$ref": "#/definitions/presenter.Transaction"
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/presenter.ErrorResponse"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
-        "account.Account": {
+        "presenter.Account": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -237,13 +266,13 @@ const docTemplate = `{
                 }
             }
         },
-        "account.Accounts": {
+        "presenter.Accounts": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/account.Account"
+                        "$ref": "#/definitions/presenter.Account"
                     }
                 },
                 "total_items": {
@@ -251,7 +280,18 @@ const docTemplate = `{
                 }
             }
         },
-        "transaction.Transaction": {
+        "presenter.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "presenter.Transaction": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -271,13 +311,13 @@ const docTemplate = `{
                 }
             }
         },
-        "transaction.Transactions": {
+        "presenter.Transactions": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/transaction.Transaction"
+                        "$ref": "#/definitions/presenter.Transaction"
                     }
                 },
                 "total_items": {
