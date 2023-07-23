@@ -76,7 +76,7 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 // @Tags Account
 // @Accept json
 // @Produce json
-// @Param Account body account.Account true " "
+// @Param Account body presenter.Account true " "
 // @Success 201 {object} presenter.Account
 // @Failure 400 {object} presenter.ErrorResponse
 // @Failure 500 {object} presenter.ErrorResponse

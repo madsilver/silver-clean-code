@@ -77,7 +77,7 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 // @Tags Transaction
 // @Accept json
 // @Produce json
-// @Param Transaction body transaction.Transaction true " "
+// @Param Transaction body presenter.Transaction true " "
 // @Success 201 {object} presenter.Transaction
 // @Failure 400 {object} presenter.ErrorResponse
 // @Failure 500 {object} presenter.ErrorResponse

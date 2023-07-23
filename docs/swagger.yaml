@@ -1,22 +1,29 @@
 basePath: /v1
 definitions:
-  account.Account:
+  presenter.Account:
     properties:
       account_id:
         type: integer
       document_number:
         type: string
     type: object
-  account.Accounts:
+  presenter.Accounts:
     properties:
       items:
         items:
-          $ref: '#/definitions/account.Account'
+          $ref: '#/definitions/presenter.Account'
         type: array
       total_items:
         type: integer
     type: object
-  transaction.Transaction:
+  presenter.ErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  presenter.Transaction:
     properties:
       account_id:
         type: integer
@@ -29,11 +36,11 @@ definitions:
       transaction_id:
         type: integer
     type: object
-  transaction.Transactions:
+  presenter.Transactions:
     properties:
       items:
         items:
-          $ref: '#/definitions/transaction.Transaction'
+          $ref: '#/definitions/presenter.Transaction'
         type: array
       total_items:
         type: integer
@@ -61,9 +68,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/account.Accounts'
+            $ref: '#/definitions/presenter.Accounts'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
       summary: List accounts.
       tags:
       - Account
@@ -77,18 +86,22 @@ paths:
         name: Account
         required: true
         schema:
-          $ref: '#/definitions/account.Account'
+          $ref: '#/definitions/presenter.Account'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/account.Account'
+            $ref: '#/definitions/presenter.Account'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
       summary: Create account.
       tags:
       - Account
@@ -97,7 +110,6 @@ paths:
       consumes:
       - application/json
       description: Find an account by the ID.
-      operationId: get-string-by-int
       parameters:
       - description: Account ID
         in: path
@@ -110,11 +122,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/account.Account'
+            $ref: '#/definitions/presenter.Account'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
       summary: Find account by ID.
       tags:
       - Account
@@ -129,9 +145,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/transaction.Transactions'
+            $ref: '#/definitions/presenter.Transactions'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
       summary: List transactions.
       tags:
       - Transaction
@@ -145,18 +163,22 @@ paths:
         name: Transaction
         required: true
         schema:
-          $ref: '#/definitions/transaction.Transaction'
+          $ref: '#/definitions/presenter.Transaction'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/transaction.Transaction'
+            $ref: '#/definitions/presenter.Transaction'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
       summary: Create transaction.
       tags:
       - Transaction
@@ -177,11 +199,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/transaction.Transaction'
+            $ref: '#/definitions/presenter.Transaction'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/presenter.ErrorResponse'
       summary: Find transaction by ID.
       tags:
       - Transaction
