@@ -3,7 +3,7 @@ LABEL maintainer="Rodrigo Prata <rbpsilver@gmail.com>"
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
-COPY . .
+COPY ./ ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo cmd/api/main.go
 
 FROM alpine:latest
