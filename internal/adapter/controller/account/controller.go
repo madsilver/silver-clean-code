@@ -41,7 +41,7 @@ func (c *AccountController) FindAccountByID(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccount(id)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
+		return ctx.JSON(http.StatusInternalServerError, presenter.InternalErrorResponse())
 	}
 
 	if result.AccountID == 0 {
@@ -65,7 +65,7 @@ func (c *AccountController) FindAccounts(ctx adapter.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
+		return ctx.JSON(http.StatusInternalServerError, presenter.InternalErrorResponse())
 	}
 	return ctx.JSON(http.StatusOK, presenter.NewAccountsPresenter(result))
 }
@@ -91,7 +91,7 @@ func (c *AccountController) CreateAccount(ctx adapter.ContextServer) error {
 	err := c.usecase.SaveAccount(acc)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
+		return ctx.JSON(http.StatusInternalServerError, presenter.InternalErrorResponse())
 	}
 	return ctx.JSON(http.StatusCreated, presenter.NewAccountPresenter(acc))
 }

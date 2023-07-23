@@ -41,7 +41,7 @@ func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) e
 	result, err := c.usecase.GetTransaction(id)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
+		return ctx.JSON(http.StatusInternalServerError, presenter.InternalErrorResponse())
 	}
 
 	if result.AccountID == 0 {
@@ -65,7 +65,7 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 	result, err := c.usecase.GetTransactions()
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
+		return ctx.JSON(http.StatusInternalServerError, presenter.InternalErrorResponse())
 	}
 
 	return ctx.JSON(http.StatusOK, presenter.NewTransactionsPresenter(result))
@@ -92,7 +92,7 @@ func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) err
 	err := c.usecase.SaveTransaction(tran)
 	if err != nil {
 		log.Error(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, presenter.NewErrorResponse("Something went wrong", ""))
+		return ctx.JSON(http.StatusInternalServerError, presenter.InternalErrorResponse())
 	}
 	return ctx.JSON(http.StatusCreated, presenter.NewTransactionPresenter(tran))
 }

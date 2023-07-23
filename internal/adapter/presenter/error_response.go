@@ -1,5 +1,7 @@
 package presenter
 
+const internalErrorMessage = "Something went wrong"
+
 type ErrorResponse struct {
 	Error   *string `json:"error,omitempty"`
 	Message *string `json:"message,omitempty"`
@@ -16,4 +18,8 @@ func NewErrorResponse(error string, message string) ErrorResponse {
 	}
 
 	return e
+}
+
+func InternalErrorResponse() ErrorResponse {
+	return NewErrorResponse(internalErrorMessage, "")
 }
