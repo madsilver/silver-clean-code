@@ -4,6 +4,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=madsilver_silver-clean-code&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=madsilver_silver-clean-code)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=madsilver_silver-clean-code&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=madsilver_silver-clean-code)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=madsilver_silver-clean-code&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=madsilver_silver-clean-code)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=madsilver_silver-clean-code&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=madsilver_silver-clean-code)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=madsilver_silver-clean-code&metric=coverage)](https://sonarcloud.io/summary/new_code?id=madsilver_silver-clean-code)
 
 This project is a practical exercise in using the **_clean code pattern_** for application architecture.
