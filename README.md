@@ -36,8 +36,5 @@ make run
 ### Makefile
 Use ``make help`` or only ``make`` to check all the available commands.
 
-## Documentation
-1. [Docs](docs)
-2. [Swagger](docs/swagger.json)
-
+## API Documentation
 http://localhost:8000/swagger/
