@@ -10,8 +10,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo cmd/api/main.go
 
 FROM alpine:3.14
 RUN apk --no-cache add ca-certificates
-USER silver
 WORKDIR /app/
 COPY --from=build /app/main .
+RUN addgroup -S silver && adduser -S silver -G silver
+USER silver
 EXPOSE 8000
 CMD ["./main"]
