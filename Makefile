@@ -14,7 +14,10 @@ run: ## Run application
 	@docker-compose up -d
 	@go run cmd/api/main.go
 
-build: ## Build image
+run-docker:  ## Run application in docker
+	@docker run -it --rm --network host silver-clean-code
+
+build-docker: ## Build image
 	@docker build -t silver-clean-code .
 
 tidy: ## Downloads go dependencies
