@@ -10,12 +10,12 @@ import (
 )
 
 func Routes(g *gin.Engine, manager *server.Manager) {
-	g.GET("/accounts/:id", mountHandler(manager.AccountController.FindAccountByID))
-	g.GET("/accounts", mountHandler(manager.AccountController.FindAccounts))
-	g.POST("/accounts", mountHandler(manager.AccountController.CreateAccount))
-	g.GET("/transactions/:id", mountHandler(manager.TransactionController.FindTransactionByID))
-	g.GET("/transactions", mountHandler(manager.TransactionController.FindTransactions))
-	g.POST("/transactions", mountHandler(manager.TransactionController.CreateTransaction))
+	g.GET("/v1/accounts/:id", mountHandler(manager.AccountController.FindAccountByID))
+	g.GET("/v1/accounts", mountHandler(manager.AccountController.FindAccounts))
+	g.POST("/v1/accounts", mountHandler(manager.AccountController.CreateAccount))
+	g.GET("/v1/transactions/:id", mountHandler(manager.TransactionController.FindTransactionByID))
+	g.GET("/v1/transactions", mountHandler(manager.TransactionController.FindTransactions))
+	g.POST("/v1/transactions", mountHandler(manager.TransactionController.CreateTransaction))
 
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }

@@ -12,16 +12,17 @@ Feel free to submit suggestions and pull requests.
 
 ## Configuration
 ### Environment variables
-| variable       | default    | description                             |
-|----------------|------------|-----------------------------------------|
-| SERVER_NAME    | echo       | server http framework name (echo / gin) |
-| SERVER_PORT    | 8000       | server port                             |
-| MYSQL_USER     | silver     |                                         |
-| MYSQL_PASSWORD | silver     |                                         |
-| MYSQL_DATABASE | silverlabs |                                         |
-| MYSQL_HOST     | localhost  |                                         |
-| MYSQL_PORT     | 3306       |                                         |
-| POSTGRES_USER  | silver     |                                         |
+| variable          | default    | description                             |
+|-------------------|------------|-----------------------------------------|
+| SERVER_NAME       | echo       | server http framework name (echo / gin) |
+| SERVER_PORT       | 8000       | server port                             |
+| DB_NAME           | mysql      | db name (mysql / postgres)              |
+| MYSQL_USER        | silver     |                                         |
+| MYSQL_PASSWORD    | silver     |                                         |
+| MYSQL_DATABASE    | silverlabs |                                         |
+| MYSQL_HOST        | localhost  |                                         |
+| MYSQL_PORT        | 3306       |                                         |
+| POSTGRES_USER     | silver     |                                         |
 | POSTGRES_PASSWORD | silver     |                                         |
 | POSTGRES_DATABASE | silverlabs |                                         |
 | POSTGRES_HOST     | localhost  |                                         |
