@@ -2,6 +2,9 @@ package gin
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "silver-clean-code/docs"
 	"silver-clean-code/internal/adapter"
 	"silver-clean-code/internal/infra/server"
 )
@@ -13,6 +16,8 @@ func Routes(g *gin.Engine, manager *server.Manager) {
 	g.GET("/transactions/:id", mountHandler(manager.TransactionController.FindTransactionByID))
 	g.GET("/transactions", mountHandler(manager.TransactionController.FindTransactions))
 	g.POST("/transactions", mountHandler(manager.TransactionController.CreateTransaction))
+
+	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
 
 func mountHandler(fnController func(ctx adapter.ContextServer) error) func(c *gin.Context) {
