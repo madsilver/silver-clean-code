@@ -21,13 +21,3 @@ func NewManager(accRepo uca.Repository, tranRepo uct.Repository) *Manager {
 		TransactionController: transaction.NewTransactionController(transactionUseCase),
 	}
 }
-
-//func NewManager(conn db.DB) *Manager {
-//	accountUseCase := uca.NewAccountUseCase(mysql.NewAccountRepository(conn))
-//	transactionUseCase := uct.NewTransactionUseCase(mysql.NewTransactionRepository(conn))
-//
-//	return &Manager{
-//		AccountController:     account.NewAccountController(accountUseCase),
-//		TransactionController: transaction.NewTransactionController(transactionUseCase),
-//	}
-//}
