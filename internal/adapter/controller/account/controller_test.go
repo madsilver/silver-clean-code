@@ -3,9 +3,9 @@ package account
 import (
 	"errors"
 	"github.com/golang/mock/gomock"
-	"silver-clean-code/internal/adapter"
+	"silver-clean-code/internal/adapter/controller"
 	mock_account "silver-clean-code/internal/adapter/controller/account/mock"
-	mock_adapter "silver-clean-code/internal/adapter/mock"
+	"silver-clean-code/internal/adapter/controller/mock"
 	"silver-clean-code/internal/entity"
 	"testing"
 )
@@ -13,7 +13,7 @@ import (
 func TestAccountController_FindByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock := mock_controller.NewMockContextServer(ctrl)
 	ctxMock.EXPECT().Param(gomock.Any()).Return("1").Times(2).AnyTimes()
 	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	usecaseMock := mock_account.NewMockUseCase(ctrl)
@@ -23,7 +23,7 @@ func TestAccountController_FindByID(t *testing.T) {
 		usecaseMock.EXPECT().GetAccount(gomock.Any()).Return(nil, errors.New("error")),
 	)
 	type args struct {
-		ctx adapter.ContextServer
+		ctx controller.ContextServer
 	}
 	tests := []struct {
 		name    string
@@ -60,7 +60,7 @@ func TestAccountController_FindByID(t *testing.T) {
 func TestAccountController_FindAll(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock := mock_controller.NewMockContextServer(ctrl)
 	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).Times(2)
 	usecaseMock := mock_account.NewMockUseCase(ctrl)
 	gomock.InOrder(
@@ -68,7 +68,7 @@ func TestAccountController_FindAll(t *testing.T) {
 		usecaseMock.EXPECT().GetAccounts().Return(nil, errors.New("error")),
 	)
 	type args struct {
-		ctx adapter.ContextServer
+		ctx controller.ContextServer
 	}
 	tests := []struct {
 		name    string
@@ -99,7 +99,7 @@ func TestAccountController_FindAll(t *testing.T) {
 func TestAccountController_CreateAccount(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock := mock_controller.NewMockContextServer(ctrl)
 	usecaseMock := mock_account.NewMockUseCase(ctrl)
 	gomock.InOrder(
 		//
@@ -115,7 +115,7 @@ func TestAccountController_CreateAccount(t *testing.T) {
 		ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil),
 	)
 	type args struct {
-		ctx adapter.ContextServer
+		ctx controller.ContextServer
 	}
 	tests := []struct {
 		name    string

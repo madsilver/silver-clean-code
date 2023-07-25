@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 	_ "silver-clean-code/docs"
-	"silver-clean-code/internal/adapter"
+	"silver-clean-code/internal/adapter/controller"
 	"silver-clean-code/internal/infra/server"
 )
 
@@ -31,7 +31,7 @@ func Routes(e *echo.Echo, manager *server.Manager) {
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
-func mountHandler(fnController func(ctx adapter.ContextServer) error) func(c echo.Context) error {
+func mountHandler(fnController func(ctx controller.ContextServer) error) func(c echo.Context) error {
 	return func(c echo.Context) error {
 		ct := NewContext(c)
 		return fnController(ct)

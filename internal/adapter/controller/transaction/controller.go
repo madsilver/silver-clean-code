@@ -3,7 +3,7 @@ package transaction
 import (
 	"github.com/labstack/gommon/log"
 	"net/http"
-	"silver-clean-code/internal/adapter"
+	"silver-clean-code/internal/adapter/controller"
 	"silver-clean-code/internal/adapter/presenter"
 	"silver-clean-code/internal/entity"
 	"strconv"
@@ -36,7 +36,7 @@ func NewTransactionController(usecase UseCase) *TransactionController {
 // @Failure 404 {object} presenter.ErrorResponse
 // @Failure 500 {object} presenter.ErrorResponse
 // @Router /transactions/{id} [get]
-func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) error {
+func (c *TransactionController) FindTransactionByID(ctx controller.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetTransaction(id)
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *TransactionController) FindTransactionByID(ctx adapter.ContextServer) e
 // @Success 200 {object} presenter.Transactions
 // @Failure 500 {object} presenter.ErrorResponse
 // @Router /transactions [get]
-func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) error {
+func (c *TransactionController) FindTransactions(ctx controller.ContextServer) error {
 	result, err := c.usecase.GetTransactions()
 	if err != nil {
 		log.Error(err.Error())
@@ -82,7 +82,7 @@ func (c *TransactionController) FindTransactions(ctx adapter.ContextServer) erro
 // @Failure 400 {object} presenter.ErrorResponse
 // @Failure 500 {object} presenter.ErrorResponse
 // @Router /transactions [post]
-func (c *TransactionController) CreateTransaction(ctx adapter.ContextServer) error {
+func (c *TransactionController) CreateTransaction(ctx controller.ContextServer) error {
 	body := presenter.NewTransactionPresenter(nil)
 	if err := ctx.Bind(body); err != nil {
 		log.Info(err.Error())

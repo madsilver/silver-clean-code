@@ -3,9 +3,9 @@ package transaction
 import (
 	"errors"
 	"github.com/golang/mock/gomock"
-	"silver-clean-code/internal/adapter"
+	"silver-clean-code/internal/adapter/controller"
+	mock_controller "silver-clean-code/internal/adapter/controller/mock"
 	mock_transaction "silver-clean-code/internal/adapter/controller/transaction/mock"
-	mock_adapter "silver-clean-code/internal/adapter/mock"
 	"silver-clean-code/internal/entity"
 	"testing"
 )
@@ -13,7 +13,7 @@ import (
 func TestTransactionController_CreateTransaction(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock := mock_controller.NewMockContextServer(ctrl)
 	usecaseMock := mock_transaction.NewMockUseCase(ctrl)
 	gomock.InOrder(
 		//
@@ -29,7 +29,7 @@ func TestTransactionController_CreateTransaction(t *testing.T) {
 		ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil),
 	)
 	type args struct {
-		ctx adapter.ContextServer
+		ctx controller.ContextServer
 	}
 	tests := []struct {
 		name    string
@@ -65,7 +65,7 @@ func TestTransactionController_CreateTransaction(t *testing.T) {
 func TestTransactionController_FindTransactionByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock := mock_controller.NewMockContextServer(ctrl)
 	ctxMock.EXPECT().Param(gomock.Any()).Return("1").Times(2).AnyTimes()
 	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	usecaseMock := mock_transaction.NewMockUseCase(ctrl)
@@ -75,7 +75,7 @@ func TestTransactionController_FindTransactionByID(t *testing.T) {
 		usecaseMock.EXPECT().GetTransaction(gomock.Any()).Return(nil, errors.New("error")),
 	)
 	type args struct {
-		ctx adapter.ContextServer
+		ctx controller.ContextServer
 	}
 	tests := []struct {
 		name    string
@@ -112,7 +112,7 @@ func TestTransactionController_FindTransactionByID(t *testing.T) {
 func TestTransactionController_FindTransactions(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	ctxMock := mock_adapter.NewMockContextServer(ctrl)
+	ctxMock := mock_controller.NewMockContextServer(ctrl)
 	ctxMock.EXPECT().JSON(gomock.Any(), gomock.Any()).Return(nil).Times(2)
 	usecaseMock := mock_transaction.NewMockUseCase(ctrl)
 	gomock.InOrder(
@@ -120,7 +120,7 @@ func TestTransactionController_FindTransactions(t *testing.T) {
 		usecaseMock.EXPECT().GetTransactions().Return(nil, errors.New("error")),
 	)
 	type args struct {
-		ctx adapter.ContextServer
+		ctx controller.ContextServer
 	}
 	tests := []struct {
 		name    string
