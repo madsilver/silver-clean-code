@@ -5,3 +5,5 @@ type ContextServer interface {
 	JSON(code int, i any) error
 	Bind(i interface{}) error
 }
+
+type HandlerFunc func(ctx ContextServer) error
