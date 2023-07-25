@@ -20,9 +20,8 @@ func Routes(g *gin.Engine, manager *server.Manager) {
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
 
-func mountHandler(fnController func(ctx controller.ContextServer) error) func(c *gin.Context) {
+func mountHandler(handler controller.HandlerFunc) func(c *gin.Context) {
 	return func(g *gin.Context) {
-		ct := NewContext(g)
-		_ = fnController(ct)
+		_ = handler(NewContext(g))
 	}
 }

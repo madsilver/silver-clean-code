@@ -31,9 +31,8 @@ func Routes(e *echo.Echo, manager *server.Manager) {
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
-func mountHandler(fnController func(ctx controller.ContextServer) error) func(c echo.Context) error {
+func mountHandler(handler controller.HandlerFunc) func(c echo.Context) error {
 	return func(c echo.Context) error {
-		ct := NewContext(c)
-		return fnController(ct)
+		return handler(NewContext(c))
 	}
 }
