@@ -42,5 +42,5 @@ mock: ## Build mocks
 	@~/go/bin/mockgen -source=internal/adapter/controller/account/controller.go -destination=internal/adapter/controller/account/mock/usecase.go
 	@~/go/bin/mockgen -source=internal/adapter/controller/transaction/controller.go -destination=internal/adapter/controller/transaction/mock/usecase.go
 	@~/go/bin/mockgen -source=internal/infra/db/db.go -destination=internal/infra/db/mock/db.go
-	@~/go/bin/mockgen -source=internal/adapter/controller/context_server.go -destination=internal/adapter/controller/mock/context_server.go
+	@~/go/bin/mockgen -source=internal/adapter/controller/core/context_server.go -destination=internal/adapter/controller/core/mock/context_server.go
 	@~/go/bin/mockgen -source=internal/usecase/transaction/repository.go -destination=internal/usecase/transaction/mock/repository.go

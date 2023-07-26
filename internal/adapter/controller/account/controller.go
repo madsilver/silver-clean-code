@@ -3,7 +3,7 @@ package account
 import (
 	"github.com/labstack/gommon/log"
 	"net/http"
-	"silver-clean-code/internal/adapter/controller"
+	"silver-clean-code/internal/adapter/controller/core"
 	"silver-clean-code/internal/adapter/presenter"
 	"silver-clean-code/internal/entity"
 	"strconv"
@@ -36,7 +36,7 @@ func NewAccountController(usecase UseCase) *AccountController {
 // @Failure 404 {object} presenter.ErrorResponse
 // @Failure 500 {object} presenter.ErrorResponse
 // @Router /accounts/{id} [get]
-func (c *AccountController) FindAccountByID(ctx controller.ContextServer) error {
+func (c *AccountController) FindAccountByID(ctx core.ContextServer) error {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 10, 8)
 	result, err := c.usecase.GetAccount(id)
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *AccountController) FindAccountByID(ctx controller.ContextServer) error 
 // @Success 200 {object} presenter.Accounts
 // @Failure 500 {object} presenter.ErrorResponse
 // @Router /accounts [get]
-func (c *AccountController) FindAccounts(ctx controller.ContextServer) error {
+func (c *AccountController) FindAccounts(ctx core.ContextServer) error {
 	result, err := c.usecase.GetAccounts()
 	if err != nil {
 		log.Error(err.Error())
@@ -81,7 +81,7 @@ func (c *AccountController) FindAccounts(ctx controller.ContextServer) error {
 // @Failure 400 {object} presenter.ErrorResponse
 // @Failure 500 {object} presenter.ErrorResponse
 // @Router /accounts [post]
-func (c *AccountController) CreateAccount(ctx controller.ContextServer) error {
+func (c *AccountController) CreateAccount(ctx core.ContextServer) error {
 	body := presenter.NewAccountPresenter(nil)
 	if err := ctx.Bind(body); err != nil {
 		log.Info(err.Error())

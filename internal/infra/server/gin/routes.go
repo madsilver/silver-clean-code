@@ -5,7 +5,7 @@ import (
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "silver-clean-code/docs"
-	"silver-clean-code/internal/adapter/controller"
+	"silver-clean-code/internal/adapter/controller/core"
 	"silver-clean-code/internal/infra/server"
 )
 
@@ -20,7 +20,7 @@ func Routes(g *gin.Engine, manager *server.Manager) {
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
 
-func mountHandler(handler controller.HandlerFunc) func(c *gin.Context) {
+func mountHandler(handler core.HandlerFunc) func(c *gin.Context) {
 	return func(g *gin.Context) {
 		_ = handler(NewContext(g))
 	}
