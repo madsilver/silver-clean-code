@@ -1,4 +1,4 @@
-package controller
+package core
 
 type ContextServer interface {
 	Param(name string) string
